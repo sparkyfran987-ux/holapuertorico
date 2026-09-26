@@ -15,8 +15,8 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
 
-        setAll(cookiesToSet, headers) {
-          cookiesToSet.forEach(({ name, value }) => {
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
             request.cookies.set(name, value);
           });
 
@@ -26,10 +26,6 @@ export async function updateSession(request: NextRequest) {
 
           cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, options);
-          });
-
-          headers?.forEach(([name, value]) => {
-            supabaseResponse.headers.set(name, value);
           });
         },
       },
@@ -42,27 +38,22 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  /*
-   * PROTECCIÓN COMPLETA DEL PANEL ADMINISTRATIVO
-   *
-   * Cualquier persona que no tenga sesión e intente
-   * entrar a /admin o cualquier ruta debajo de /admin
-   * será enviada directamente al inicio.
-   */
-  if (pathname.startsWith("/admin") && !user) {
+  if (
+    pathname.startsWith("/admin") &&
+    pathname !== "/admin/login" &&
+    !user
+  ) {
     const url = request.nextUrl.clone();
+
     url.pathname = "/";
     url.search = "";
 
     return NextResponse.redirect(url);
   }
 
-  /*
-   * Si ya está autenticado y visita /admin/login,
-   * lo enviamos al panel.
-   */
   if (pathname === "/admin/login" && user) {
     const url = request.nextUrl.clone();
+
     url.pathname = "/admin";
     url.search = "";
 
