@@ -1,341 +1,322 @@
 import Link from "next/link";
-
-import Header from "@/components/site/Header";
-import Navbar from "@/components/site/Navbar";
-import BreakingNews from "@/components/site/BreakingNews";
-import Footer from "@/components/site/Footer";
-import SponsorSlot from "@/components/site/SponsorSlot";
-import FeaturedCarousel from "@/components/news/FeaturedCarousel";
-import NewsGrid from "@/components/news/NewsGrid";
-import CategorySection from "@/components/news/CategorySection";
-
+import { requireAdmin } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/server";
-import type { NewsArticle } from "@/types/news";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function AdminPage() {
+  await requireAdmin();
+
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("news")
-    .select(
-      `
-        id,
-        title,
-        slug,
-        excerpt,
-        content,
-        image_url,
-        category,
-        author,
-        status,
-        featured,
-        breaking,
-        published_at,
-        created_at,
-        updated_at
-      `
-    )
-    .eq("status", "published")
-    .order("published_at", { ascending: false });
+  const [
+    { count: totalNews },
+    { count: publishedNews },
+    { count: draftNews },
+    { count: featuredNews },
+    { data: recentNews },
+  ] = await Promise.all([
+    supabase
+      .from("news")
+      .select("*", { count: "exact", head: true }),
 
-  if (error) {
-    console.error("Error cargando noticias:", {
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-      code: error.code,
-    });
-  }
+    supabase
+      .from("news")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "published"),
 
-  const noticias = (data ?? []) as NewsArticle[];
+    supabase
+      .from("news")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "draft"),
 
-  const breakingNews =
-    noticias.find((article) => article.breaking) ?? null;
+    supabase
+      .from("news")
+      .select("*", { count: "exact", head: true })
+      .eq("featured", true),
 
-  /*
-   * Todas las noticias marcadas como destacadas
-   * aparecen en el carrusel.
-   */
-  const featuredNews = noticias.filter(
-    (article) => article.featured
-  );
-
-  /*
-   * Si no existen noticias destacadas,
-   * usamos la noticia más reciente como principal.
-   */
-  const heroNews = featuredNews[0] ?? noticias[0] ?? null;
-
-  /*
-   * Últimas noticias:
-   * solamente mostramos 3.
-   */
-  const latestNews = noticias
-    .filter((article) => article.id !== heroNews?.id)
-    .slice(0, 3);
-
-  /*
-   * CATEGORÍAS
-   */
-
-  const noticiasLocales = noticias
-    .filter(
-      (article) =>
-        article.category === "Noticias Locales"
-    )
-    .slice(0, 4);
-
-  const entretenimientoNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Entretenimiento"
-    )
-    .slice(0, 4);
-
-  const culturaTurismoNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Cultura y Turismo"
-    )
-    .slice(0, 4);
-
-  const politicaNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Política y Gobierno"
-    )
-    .slice(0, 4);
-
-  const internacionalNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Internacional"
-    )
-    .slice(0, 4);
-
-  const deportesNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Deportes"
-    )
-    .slice(0, 4);
-
-  const economiaNews = noticias
-    .filter(
-      (article) =>
-        article.category === "Economía y Comercio"
-    )
-    .slice(0, 4);
-
-  const naturalezaNews = noticias
-    .filter(
-      (article) =>
-        article.category ===
-        "Naturaleza y Medio Ambiente"
-    )
-    .slice(0, 4);
+    supabase
+      .from("news")
+      .select(
+        "id, title, slug, category, status, featured, image_url, created_at"
+      )
+      .order("created_at", { ascending: false })
+      .limit(5),
+  ]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-950">
-      <Header />
+    <main className="min-h-screen bg-[#f5f6f8]">
+      <div className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8">
+        {/* HEADER */}
+        <header className="mb-8 flex flex-col gap-5 border-b border-gray-200 pb-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <Link href="/" className="inline-block">
+              <img
+                src="/logo.png"
+                alt="Hola Puerto Rico+"
+                className="h-auto w-[210px]"
+              />
+            </Link>
 
-      <Navbar active="Inicio" />
+            <p className="mt-5 text-[10px] font-black uppercase tracking-[0.2em] text-red-600">
+              Panel administrativo
+            </p>
 
-      {breakingNews && (
-        <BreakingNews
-          title={breakingNews.title}
-          slug={breakingNews.slug}
-        />
-      )}
+            <h1 className="mt-2 text-3xl font-black tracking-[-0.04em] text-gray-950 sm:text-4xl">
+              Administración
+            </h1>
 
-      <main>
-        {/* CARRUSEL DE DESTACADAS */}
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">
+              Gestiona las noticias y el contenido editorial de Hola Puerto
+              Rico+.
+            </p>
+          </div>
 
-        {featuredNews.length > 0 && (
-          <FeaturedCarousel
-            articles={featuredNews}
-          />
-        )}
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/"
+              className="border border-gray-300 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.1em] text-gray-700 transition hover:border-gray-950 hover:text-gray-950"
+            >
+              Ver sitio
+            </Link>
 
-        {/* SI NO HAY DESTACADAS */}
+            <Link
+              href="/admin/noticias/nueva"
+              className="bg-gray-950 px-5 py-3 text-xs font-black uppercase tracking-[0.1em] text-white transition hover:bg-red-600"
+            >
+              Nueva noticia
+            </Link>
+          </div>
+        </header>
 
-        {featuredNews.length === 0 && heroNews && (
-          <section className="mx-auto max-w-[1150px] px-4 pt-6 sm:px-6 lg:px-8">
-            <article className="overflow-hidden border border-gray-200 bg-white">
-              <div className="grid lg:grid-cols-2">
-                <Link
-                  href={`/noticias/${heroNews.slug}`}
-                  className="block bg-gray-50"
-                >
-                  {heroNews.image_url ? (
-                    <div className="flex w-full items-center justify-center">
-                      <img
-                        src={heroNews.image_url}
-                        alt={heroNews.title}
-                        className="block h-auto w-full object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex aspect-square items-center justify-center text-sm font-bold text-gray-400">
-                      Hola Puerto Rico+
-                    </div>
-                  )}
-                </Link>
+        {/* STATS */}
+        <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="border border-gray-200 bg-white p-6">
+            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">
+              Total de noticias
+            </p>
 
-                <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-                  <span className="text-xs font-black uppercase tracking-[0.15em] text-red-600">
-                    Noticias
-                  </span>
+            <p className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">
+              {totalNews ?? 0}
+            </p>
 
-                  <Link
-                    href={`/noticias/${heroNews.slug}`}
-                  >
-                    <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-gray-950 transition-colors hover:text-red-600 sm:text-4xl">
-                      {heroNews.title}
-                    </h1>
-                  </Link>
+            <p className="mt-2 text-xs text-gray-500">
+              Todo el contenido registrado
+            </p>
+          </div>
 
-                  {heroNews.excerpt && (
-                    <p className="mt-4 text-sm leading-6 text-gray-600">
-                      {heroNews.excerpt}
-                    </p>
-                  )}
+          <div className="border border-gray-200 bg-white p-6">
+            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">
+              Publicadas
+            </p>
 
-                  <Link
-                    href={`/noticias/${heroNews.slug}`}
-                    className="mt-6 text-sm font-black text-gray-950 transition-colors hover:text-red-600"
-                  >
-                    Leer noticia →
-                  </Link>
-                </div>
-              </div>
-            </article>
-          </section>
-        )}
+            <p className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">
+              {publishedNews ?? 0}
+            </p>
 
-        {/* AUSPCIADOR */}
+            <p className="mt-2 text-xs text-gray-500">
+              Noticias visibles públicamente
+            </p>
+          </div>
 
-        <section className="mx-auto max-w-[1500px] px-4 py-12 sm:px-6 lg:px-8">
-        <SponsorSlot
-          position="Inicio - Banner principal"
-          width={1456}
-          height={180}
-        />
+          <div className="border border-gray-200 bg-white p-6">
+            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">
+              Borradores
+            </p>
+
+            <p className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">
+              {draftNews ?? 0}
+            </p>
+
+            <p className="mt-2 text-xs text-gray-500">
+              Contenido pendiente de publicar
+            </p>
+          </div>
+
+          <div className="border border-gray-200 bg-white p-6">
+            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">
+              Destacadas
+            </p>
+
+            <p className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">
+              {featuredNews ?? 0}
+            </p>
+
+            <p className="mt-2 text-xs text-gray-500">
+              Noticias marcadas para destacar
+            </p>
+          </div>
         </section>
 
-        {/* ÚLTIMAS NOTICIAS */}
+        {/* QUICK ACTIONS */}
+        <section className="mb-8">
+          <div className="mb-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-red-600">
+              Gestión
+            </p>
 
-        {latestNews.length > 0 && (
-          <section className="mx-auto max-w-[1500px] px-4 py-12 sm:px-6 lg:px-8">
-            <div className="mb-7 flex items-end justify-between gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-[0.18em] text-red-600">
-                  Lo más reciente
+            <h2 className="mt-1 text-xl font-black tracking-[-0.03em] text-gray-950">
+              Acciones rápidas
+            </h2>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <Link
+              href="/admin/noticias"
+              className="group border border-gray-200 bg-white p-6 transition hover:border-red-600"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-black text-gray-950">
+                    Administrar noticias
+                  </p>
+
+                  <p className="mt-2 text-xs leading-5 text-gray-500">
+                    Consulta, edita, publica, destaca o elimina noticias.
+                  </p>
+                </div>
+
+                <span className="text-xl font-light text-gray-300 transition group-hover:text-red-600">
+                  →
                 </span>
-
-                <h2 className="mt-2 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
-                  Últimas noticias
-                </h2>
               </div>
+            </Link>
 
-              <Link
-                href="/noticias"
-                className="text-sm font-bold text-gray-900 transition-colors hover:text-red-600"
-              >
-                Todas las noticias →
-              </Link>
+            <Link
+              href="/admin/noticias/nueva"
+              className="group border border-gray-200 bg-white p-6 transition hover:border-red-600"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-black text-gray-950">
+                    Crear noticia
+                  </p>
+
+                  <p className="mt-2 text-xs leading-5 text-gray-500">
+                    Redacta una noticia nueva y publícala en el portal.
+                  </p>
+                </div>
+
+                <span className="text-xl font-light text-gray-300 transition group-hover:text-red-600">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/auspiciadores"
+              className="group border border-gray-200 bg-white p-6 transition hover:border-red-600"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-black text-gray-950">
+                    Auspiciadores
+                  </p>
+
+                  <p className="mt-2 text-xs leading-5 text-gray-500">
+                    Administra banners y espacios publicitarios del sitio.
+                  </p>
+                </div>
+
+                <span className="text-xl font-light text-gray-300 transition group-hover:text-red-600">
+                  →
+                </span>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* RECENT NEWS */}
+        <section className="border border-gray-200 bg-white">
+          <div className="flex flex-col gap-3 border-b border-gray-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-red-600">
+                Actividad editorial
+              </p>
+
+              <h2 className="mt-1 text-lg font-black tracking-[-0.02em] text-gray-950">
+                Noticias recientes
+              </h2>
             </div>
 
-            <NewsGrid articles={latestNews} />
-          </section>
-        )}
+            <Link
+              href="/admin/noticias"
+              className="text-xs font-black uppercase tracking-[0.1em] text-gray-500 transition hover:text-red-600"
+            >
+              Ver todas →
+            </Link>
+          </div>
 
-        {/* NOTICIAS LOCALES */}
+          {recentNews && recentNews.length > 0 ? (
+            <div className="divide-y divide-gray-100">
+              {recentNews.map((news) => (
+                <div
+                  key={news.id}
+                  className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center"
+                >
+                  <div className="h-20 w-20 shrink-0 overflow-hidden border border-gray-200 bg-gray-100">
+                    {news.image_url ? (
+                      <img
+                        src={news.image_url}
+                        alt={news.title}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-2 text-center text-[8px] font-black uppercase tracking-[0.08em] text-gray-400">
+                        Sin imagen
+                      </div>
+                    )}
+                  </div>
 
-        <CategorySection
-          title="Noticias Locales"
-          eyebrow="Noticias Locales"
-          href="/noticias?categoria=Noticias%20Locales"
-          articles={noticiasLocales}
-        />
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex flex-wrap items-center gap-2">
+                      <span className="text-[9px] font-black uppercase tracking-[0.1em] text-red-600">
+                        {news.category}
+                      </span>
 
-        {/* ENTRETENIMIENTO */}
+                      {news.featured && (
+                        <span className="border border-yellow-200 bg-yellow-50 px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.08em] text-yellow-700">
+                          Destacada
+                        </span>
+                      )}
+                    </div>
 
-        <CategorySection
-          title="Entretenimiento"
-          eyebrow="Entretenimiento"
-          href="/noticias?categoria=Entretenimiento"
-          articles={entretenimientoNews}
-        />
+                    <h3 className="line-clamp-2 text-sm font-black text-gray-950">
+                      {news.title}
+                    </h3>
 
-        {/* CULTURA Y TURISMO */}
+                    <p className="mt-1 text-xs text-gray-400">
+                      {news.status === "published"
+                        ? "Publicada"
+                        : "Borrador"}
+                    </p>
+                  </div>
 
-        <CategorySection
-          title="Cultura y Turismo"
-          eyebrow="Cultura y Turismo"
-          href="/noticias?categoria=Cultura%20y%20Turismo"
-          articles={culturaTurismoNews}
-        />
+                  <Link
+                    href={`/admin/noticias/${news.id}/editar`}
+                    className="shrink-0 border border-gray-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.1em] text-gray-600 transition hover:border-red-600 hover:text-red-600"
+                  >
+                    Editar
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="px-6 py-16 text-center">
+              <p className="text-sm font-bold text-gray-500">
+                Todavía no hay noticias registradas.
+              </p>
 
-        {/* POLÍTICA Y GOBIERNO */}
-
-        <CategorySection
-          title="Política y Gobierno"
-          eyebrow="Política y Gobierno"
-          href="/noticias?categoria=Pol%C3%ADtica%20y%20Gobierno"
-          articles={politicaNews}
-        />
-
-        {/* INTERNACIONAL */}
-
-        <CategorySection
-          title="Internacional"
-          eyebrow="Internacional"
-          href="/noticias?categoria=Internacional"
-          articles={internacionalNews}
-        />
-
-        {/* DEPORTES */}
-
-        <CategorySection
-          title="Deportes"
-          eyebrow="Deportes"
-          href="/noticias?categoria=Deportes"
-          articles={deportesNews}
-        />
-
-        {/* ECONOMÍA Y COMERCIO */}
-
-        <CategorySection
-          title="Economía y Comercio"
-          eyebrow="Economía y Comercio"
-          href="/noticias?categoria=Econom%C3%ADa%20y%20Comercio"
-          articles={economiaNews}
-        />
-
-        {/* NATURALEZA Y MEDIO AMBIENTE */}
-
-        <CategorySection
-          title="Naturaleza y Medio Ambiente"
-          eyebrow="Naturaleza y Medio Ambiente"
-          href="/noticias?categoria=Naturaleza%20y%20Medio%20Ambiente"
-          articles={naturalezaNews}
-        />
-
-        {/* AUSPCIADOR FINAL */}
-
-        <section className="mx-auto max-w-[1500px] px-4 py-12 sm:px-6 lg:px-8">
-        <SponsorSlot
-          position="Inicio - Banner inferior"
-          width={1456}
-          height={180}
-        />
+              <Link
+                href="/admin/noticias/nueva"
+                className="mt-4 inline-block bg-gray-950 px-5 py-3 text-xs font-black uppercase tracking-[0.1em] text-white transition hover:bg-red-600"
+              >
+                Crear primera noticia
+              </Link>
+            </div>
+          )}
         </section>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </main>
   );
 }
