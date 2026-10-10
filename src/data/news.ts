@@ -1,29 +1,21 @@
-export type NewsCategory =
-  | "Noticias Locales"
-  | "Entretenimiento"
-  | "Cultura y Turismo"
-  | "Política y Gobierno"
-  | "Internacional"
-  | "Deportes"
-  | "Economía y Comercio"
-  | "Naturaleza y Medio Ambiente";
+import type { NewsArticle } from "@/types/news";
 
-export type NewsStatus = "draft" | "published";
-
-export interface NewsArticle {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  content?: string | null;
-  backlink?: string | null;
-  image_url: string | null;
-  category: string;
-  author: string;
-  status: NewsStatus;
-  featured: boolean;
-  breaking: boolean;
-  published_at: string | null;
-  created_at?: string;
-  updated_at?: string;
-}
+export const news: NewsArticle[] = [
+  {
+    id: "1",
+    title: "Hola Puerto Rico+ comienza una nueva etapa digital",
+    slug: "hola-puerto-rico-comienza-nueva-etapa-digital",
+    excerpt:
+      "Noticias, comunidad, deportes, entretenimiento y mucho más de Puerto Rico.",
+    content:
+      "Bienvenidos a Hola Puerto Rico+. Este espacio será dedicado a informar y compartir contenido de Puerto Rico.",
+    backlink: null,
+    image_url: "/images/noticia-1.jpg",
+    category: "Noticias Locales",
+    author: "Hola Puerto Rico+",
+    published_at: "2026-09-22T17:00:00",
+    status: "published",
+    featured: true,
+    breaking: false,
+  },
+];
