@@ -1,73 +1,35 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+export async function createClient() {
+  const cookieStore = await cookies();
 
-  const supabase = createServerClient(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll();
+          return cookieStore.getAll();
         },
 
-        setAll(cookiesToSet, headers) {
-          cookiesToSet.forEach(({ name, value }) => {
-            request.cookies.set(name, value);
-          });
-
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-
-          cookiesToSet.forEach(({ name, value, options }) => {
-            supabaseResponse.cookies.set(name, value, options);
-          });
-
-          headers?.forEach(([name, value]) => {
-            supabaseResponse.headers.set(name, value);
-          });
+        setAll(
+          cookiesToSet: {
+            name: string;
+            value: string;
+            options?: Parameters<typeof cookieStore.set>[2];
+          }[]
+        ) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          } catch {
+            // Las cookies pueden no poder modificarse
+            // desde algunos Server Components.
+          }
         },
       },
     }
   );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-
-  /*
-   * PROTECCIÓN COMPLETA DEL PANEL ADMINISTRATIVO
-   *
-   * Cualquier persona que no tenga sesión e intente
-   * entrar a /admin o cualquier ruta debajo de /admin
-   * será enviada directamente al inicio.
-   */
-  if (pathname.startsWith("/admin") && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    url.search = "";
-
-    return NextResponse.redirect(url);
-  }
-
-  /*
-   * Si ya está autenticado y visita /admin/login,
-   * lo enviamos al panel.
-   */
-  if (pathname === "/admin/login" && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin";
-    url.search = "";
-
-    return NextResponse.redirect(url);
-  }
-
-  return supabaseResponse;
 }
