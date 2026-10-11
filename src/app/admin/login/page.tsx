@@ -31,7 +31,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/auspiciadores");
+    router.push("/admin/auspiciadores");
     router.refresh();
   }
 
