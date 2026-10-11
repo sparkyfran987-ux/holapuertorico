@@ -30,11 +30,6 @@ export default function Header() {
           </p>
         </div>
 
-        <Link
-          href="/buscar"
-          aria-label="Buscar"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-all hover:border-[#c7192e] hover:bg-[#c7192e] hover:text-white"
-        >
           <svg
             width="19"
             height="19"
