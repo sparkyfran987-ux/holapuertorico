@@ -30,27 +30,6 @@ export default function Header() {
             Aquí siempre es buena noticia
           </p>
         </div>
-
-        <Link
-          href="/buscar"
-          aria-label="Buscar"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-all hover:border-[#c7192e] hover:bg-[#c7192e] hover:text-white"
-        >
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" />
-          </svg>
-        </Link>
       </div>
     </header>
   );
