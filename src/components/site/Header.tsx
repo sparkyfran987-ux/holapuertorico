@@ -1,4 +1,3 @@
-```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,6 +5,7 @@ export default function Header() {
   return (
     <header className="bg-white">
       <div className="mx-auto flex min-h-[92px] max-w-[1500px] items-center justify-between gap-6 px-5 lg:px-8">
+        
         {/* Logo */}
         <Link
           href="/"
@@ -59,8 +59,8 @@ export default function Header() {
             YouTube
           </a>
         </div>
+
       </div>
     </header>
   );
 }
-```
