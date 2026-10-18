@@ -16,11 +16,22 @@ const socialLinks = [
   },
 ];
 
+const navLinks = [
+  {
+    label: "Inicio",
+    href: "/",
+  },
+  {
+    label: "Editorial",
+    href: "/editorial",
+  },
+];
+
 export default function Header() {
   return (
     <header className="bg-white">
+      {/* Encabezado principal */}
       <div className="mx-auto flex min-h-[92px] max-w-[1500px] items-center justify-between gap-6 px-5 lg:px-8">
-
         <Link
           href="/"
           className="shrink-0 transition-opacity hover:opacity-90"
@@ -59,8 +70,25 @@ export default function Header() {
             </a>
           ))}
         </div>
-
       </div>
+
+      {/* Navegación */}
+      <nav
+        aria-label="Navegación principal"
+        className="border-t border-gray-100 bg-[#071428]"
+      >
+        <div className="mx-auto flex max-w-[1500px] items-center justify-center gap-2 px-5">
+          {navLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="px-5 py-3 text-xs font-black uppercase tracking-[0.16em] text-white/80 transition hover:bg-white/10 hover:text-white sm:px-7"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
     </header>
   );
 }
