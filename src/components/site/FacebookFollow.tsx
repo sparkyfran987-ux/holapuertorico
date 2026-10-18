@@ -23,7 +23,7 @@ export default function FacebookFollow() {
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-white/70">
           Publicamos más historias, videos y actualizaciones todos los
-          días en Facebook. Entra a la página de Hola Puerto Rico+ y
+          días en Facebook. Entra a la página de Hola Puerto Rico y
           no te pierdas lo que está pasando en la isla.
         </p>
 
