@@ -134,7 +134,7 @@ export default function FeaturedNews() {
             <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
               <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
                 <iframe
-                  src="https://www.youtube.com/embed?listType=user_uploads&list=holaprtv"
+                  src="https://www.youtube.com/embed?listType=user_uploads&list=UC1eYBIuG7c9ruG4TDgEHw4w"
                   title="Videos de Hola Puerto Rico TV en YouTube"
                   className="absolute inset-0 h-full w-full border-0"
                   loading="lazy"
@@ -147,10 +147,11 @@ export default function FeaturedNews() {
               <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-4">
                 <div>
                   <p className="font-bold text-[#071428]">
-                    Hola Puerto Rico
+                    Hola Puerto Rico+
                   </p>
+
                   <p className="mt-1 text-xs text-gray-500">
-                    Más contenido • Más Puerto Rico
+                    Más contenido • Más Puerto Rico • Siempre contigo
                   </p>
                 </div>
 
