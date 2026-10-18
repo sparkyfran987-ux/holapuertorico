@@ -38,7 +38,7 @@ export default async function EditorialArticlePage({
   const { data, error } = await supabase
     .from("editorials")
     .select(
-      "id, title, slug, excerpt, content, , author, status, featured, published_at"
+      "id, title, slug, excerpt, content, image_url, author, status, featured, published_at"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -95,21 +95,21 @@ export default async function EditorialArticlePage({
         </div>
       </section>
 
-      {/* Imagen */}
+      {/* Imagen completa sin recorte */}
       {editorial.image_url && (
         <div className="mx-auto max-w-[1300px] px-5 pt-8 sm:px-8 lg:pt-12">
-  <div className="relative overflow-hidden rounded-3xl bg-[#071428]">
-    <Image
-      src={editorial.image_url}
-      alt={editorial.title}
-      width={1600}
-      height={900}
-      priority
-      className="h-auto w-full object-contain"
-      sizes="(max-width: 1300px) 100vw, 1300px"
-    />
-  </div>
-</div>
+          <div className="overflow-hidden rounded-3xl bg-[#071428]">
+            <Image
+              src={editorial.image_url}
+              alt={editorial.title}
+              width={1600}
+              height={900}
+              priority
+              className="h-auto w-full object-contain"
+              sizes="(max-width: 1300px) 100vw, 1300px"
+            />
+          </div>
+        </div>
       )}
 
       {/* Contenido */}
@@ -126,14 +126,14 @@ export default async function EditorialArticlePage({
         </div>
 
         <div className="mt-14 border-t border-gray-200 pt-8">
-  <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-400">
-    Hola Puerto Rico
-  </p>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-400">
+            Hola Puerto Rico
+          </p>
 
-  <p className="mt-2 text-sm font-semibold text-[#071428]">
-    Más contenido • Más Puerto Rico • Siempre contigo
-  </p>
-</div>
+          <p className="mt-2 text-sm font-semibold text-[#071428]">
+            Más contenido • Más Puerto Rico • Siempre contigo
+          </p>
+        </div>
       </article>
     </main>
   );
