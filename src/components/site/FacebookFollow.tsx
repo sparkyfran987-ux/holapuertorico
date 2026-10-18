@@ -64,7 +64,7 @@ export default function FacebookFollow() {
           </p>
 
           <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-            Hola Puerto Rico+ está en tus redes.
+            Hola Puerto Rico está en tus redes.
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
