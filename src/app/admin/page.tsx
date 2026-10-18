@@ -1,4 +1,3 @@
-```tsx
 import Link from "next/link";
 
 export default function AdminPage() {
@@ -96,4 +95,3 @@ export default function AdminPage() {
     </main>
   );
 }
-```
