@@ -88,7 +88,7 @@ export default function Footer() {
 
         <div className="mt-12 border-t border-white/10 pt-6">
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Hola Puerto Rico+. Todos los
+            © {new Date().getFullYear()} Hola Puerto Rico. Todos los
             derechos reservados.
           </p>
         </div>
