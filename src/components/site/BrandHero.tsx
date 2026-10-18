@@ -86,7 +86,7 @@ export default function BrandHero() {
             </div>
           </div>
 
-          {/* Publicaciones de Facebook - SociableKIT */}
+          {/* Publicaciones de Facebook */}
           <div className="min-w-0">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -113,21 +113,26 @@ export default function BrandHero() {
               </a>
             </div>
 
-            {/* Widget cuadrado de 1000 x 1000 */}
-            <div className="mx-auto w-full max-w-[1000px] overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
+            {/* Facebook Page Plugin */}
+            <div className="mx-auto w-full max-w-[500px] overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
               <iframe
-                src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fholapr1&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
                 title="Publicaciones de Facebook de Hola Puerto Rico"
-                width="100%"
-                height="1000"
-                frameBorder="0"
-                loading="lazy"
-                className="block w-full border-0"
+                width="340"
+                height="500"
                 style={{
-                  height: "1000px",
+                  border: "none",
+                  overflow: "hidden",
                   width: "100%",
+                  maxWidth: "340px",
+                  height: "500px",
                   display: "block",
+                  margin: "0 auto",
                 }}
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
               />
             </div>
 
