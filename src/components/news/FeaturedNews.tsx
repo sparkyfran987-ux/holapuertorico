@@ -1,14 +1,5 @@
 
-import type { CSSProperties } from "react";
-
 export default function FeaturedNews() {
-  const iframeStyle: CSSProperties = {
-    display: "block",
-    width: "100%",
-    height: "1050px",
-    border: "none",
-  };
-
   const topics = [
     {
       number: "01",
@@ -112,60 +103,54 @@ export default function FeaturedNews() {
             </div>
           </div>
 
-          {/* Redes sociales */}
-          <div className="min-w-0 space-y-12">
-            {/* Facebook */}
-            <div>
-              <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
-                    Síguenos en Facebook
-                  </p>
+          {/* YouTube */}
+          <div className="min-w-0">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
+                  Hola Puerto Rico TV
+                </p>
 
-                  <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428]">
-                    Lo último de nuestra comunidad
-                  </h3>
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428] sm:text-3xl">
+                  También estamos en YouTube
+                </h3>
 
-                  <p className="mt-2 text-sm leading-6 text-gray-500">
-                    Publicaciones, noticias y momentos de Puerto Rico.
-                  </p>
-                </div>
-
-                <a
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
-                >
-                  Visitar Facebook ↗
-                </a>
+                <p className="mt-2 text-sm leading-6 text-gray-500">
+                  Disfruta nuestros videos, noticias y más contenido
+                  de Puerto Rico.
+                </p>
               </div>
 
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
-                <iframe
-                  src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
-                  title="Publicaciones de Facebook de Hola Puerto Rico"
-                  style={iframeStyle}
-                  loading="lazy"
-                  allow="encrypted-media"
-                />
-              </div>
+              <a
+                href="https://www.youtube.com/@holaprtv"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
+              >
+                Visitar YouTube ↗
+              </a>
             </div>
 
-            {/* YouTube */}
-            <div>
-              <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
+              <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
+                <iframe
+                  src="https://www.youtube.com/embed?listType=user_uploads&list=holaprtv"
+                  title="Videos de Hola Puerto Rico TV en YouTube"
+                  className="absolute inset-0 h-full w-full border-0"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-4">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
-                    Hola Puerto Rico TV
+                  <p className="font-bold text-[#071428]">
+                    Hola Puerto Rico
                   </p>
-
-                  <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428]">
-                    También estamos en YouTube
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-6 text-gray-500">
-                    Noticias, videos y más contenido de nuestra isla.
+                  <p className="mt-1 text-xs text-gray-500">
+                    Más contenido • Más Puerto Rico
                   </p>
                 </div>
 
@@ -173,24 +158,11 @@ export default function FeaturedNews() {
                   href="https://www.youtube.com/@holaprtv"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#bf0a30] px-4 py-2.5 text-xs font-black text-white transition hover:bg-[#a00828]"
                 >
-                  Visitar YouTube ↗
+                  Ver canal
+                  <span aria-hidden="true">↗</span>
                 </a>
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
-                <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
-                  <iframe
-                    src="https://www.youtube.com/embed?listType=user_uploads&list=holaprtv"
-                    title="Videos de Hola Puerto Rico TV en YouTube"
-                    className="absolute inset-0 h-full w-full border-0"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
               </div>
             </div>
           </div>
