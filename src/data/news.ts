@@ -1,3 +1,4 @@
+```ts
 import type { NewsArticle } from "@/types/news";
 
 export const news: NewsArticle[] = [
@@ -7,9 +8,6 @@ export const news: NewsArticle[] = [
     slug: "hola-puerto-rico-comienza-nueva-etapa-digital",
     excerpt:
       "Noticias, comunidad, deportes, entretenimiento y mucho más de Puerto Rico.",
-    content:
-      "Bienvenidos a Hola Puerto Rico+. Este espacio será dedicado a informar y compartir contenido de Puerto Rico.",
-    backlink: null,
     image_url: "/images/noticia-1.jpg",
     category: "Noticias Locales",
     author: "Hola Puerto Rico+",
@@ -19,3 +17,4 @@ export const news: NewsArticle[] = [
     breaking: false,
   },
 ];
+```
