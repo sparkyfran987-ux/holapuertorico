@@ -87,7 +87,7 @@ export default async function HomePage() {
 
                 <p className="mt-4 max-w-md text-sm leading-7 text-gray-600">
                   Publicidad, colaboraciones o cualquier pregunta sobre
-                  Hola Puerto Rico+. Estamos para ayudarte.
+                  Hola Puerto Rico. Estamos para ayudarte.
                 </p>
               </div>
 
