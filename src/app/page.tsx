@@ -57,6 +57,15 @@ export default async function HomePage() {
     <div className="min-h-screen bg-white text-[#071428]">
       <Header />
 
+      <SponsorCarouselLoader />
+
+{breakingNews && (
+  <BreakingNews
+    title={breakingNews.title}
+    slug={breakingNews.slug}
+  />
+)}
+
       {breakingNews && (
         <BreakingNews
           title={breakingNews.title}
