@@ -1,3 +1,4 @@
+```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,8 +27,7 @@ export default function FeaturedNews({
 
   const [lead, ...rest] = articles;
   const leadDate = formatDate(lead.published_at);
-
-  const leadHref = lead.backlink || `/noticias/${lead.slug}`;
+  const leadHref = `/noticias/${lead.slug}`;
 
   return (
     <section
@@ -56,12 +56,6 @@ export default function FeaturedNews({
         <article className="mt-10 overflow-hidden rounded-3xl border border-gray-200 bg-[#071428] shadow-[0_24px_80px_rgba(7,20,40,0.18)]">
           <Link
             href={leadHref}
-            target={lead.backlink ? "_blank" : undefined}
-            rel={
-              lead.backlink
-                ? "noopener noreferrer"
-                : undefined
-            }
             className="group grid lg:grid-cols-[1.2fr_0.8fr]"
           >
             <div className="relative min-h-[280px] bg-[#071428] sm:min-h-[380px] lg:min-h-[520px]">
@@ -130,27 +124,14 @@ export default function FeaturedNews({
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {rest.map((article) => {
               const date = formatDate(article.published_at);
-
-              const articleHref =
-                article.backlink || `/noticias/${article.slug}`;
+              const articleHref = `/noticias/${article.slug}`;
 
               return (
                 <article
                   key={article.id}
                   className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:border-[#bf0a30]/40 hover:shadow-xl"
                 >
-                  <Link
-                    href={articleHref}
-                    target={
-                      article.backlink ? "_blank" : undefined
-                    }
-                    rel={
-                      article.backlink
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="block"
-                  >
+                  <Link href={articleHref} className="block">
                     <div className="relative aspect-[16/10] bg-[#071428]">
                       {article.image_url ? (
                         <Image
@@ -202,3 +183,4 @@ export default function FeaturedNews({
     </section>
   );
 }
+```
