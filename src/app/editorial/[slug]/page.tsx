@@ -125,14 +125,14 @@ export default async function EditorialArticlePage({
         </div>
 
         <div className="mt-14 border-t border-gray-200 pt-8">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-400">
-            Hola Puerto Rico+
-          </p>
+  <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-400">
+    Hola Puerto Rico
+  </p>
 
-          <p className="mt-2 text-sm font-semibold text-[#071428]">
-            Más contenido • Más Puerto Rico • Siempre contigo
-          </p>
-        </div>
+  <p className="mt-2 text-sm font-semibold text-[#071428]">
+    Más contenido • Más Puerto Rico • Siempre contigo
+  </p>
+</div>
       </article>
     </main>
   );
