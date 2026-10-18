@@ -86,7 +86,7 @@ export default function BrandHero() {
             </div>
           </div>
 
-          {/* Widget actualizado de Juicer */}
+          {/* Publicaciones de Facebook - SociableKIT */}
           <div className="min-w-0">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -113,18 +113,21 @@ export default function BrandHero() {
               </a>
             </div>
 
+            {/* Widget cuadrado de 1000 x 1000 */}
             <div className="mx-auto w-full max-w-[1000px] overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
               <iframe
-                src="https://www.juicer.io/api/feeds/holapr1-a10356be-154f-4a03-82cd-4a4e27f9ebf1/iframe"
-                title="holapr1 - Juicer social media feed"
-                className="mx-auto block w-full border-0"
+                src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
+                title="Publicaciones de Facebook de Hola Puerto Rico"
+                width="100%"
+                height="1000"
+                frameBorder="0"
+                loading="lazy"
+                className="block w-full border-0"
                 style={{
                   height: "1000px",
-                  maxWidth: "100%",
+                  width: "100%",
                   display: "block",
-                  margin: "0 auto",
                 }}
-                loading="lazy"
               />
             </div>
 
