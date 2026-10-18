@@ -58,7 +58,7 @@ export default async function EditorialPage() {
         <div className="mx-auto max-w-[1500px] px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
           <div className="max-w-3xl">
             <p className="text-xs font-black uppercase tracking-[0.25em] text-[#ff647f]">
-              Hola Puerto Rico+
+              Hola Puerto Rico
             </p>
 
             <h1 className="mt-4 text-5xl font-black tracking-[-0.04em] sm:text-6xl lg:text-7xl">
