@@ -5,6 +5,7 @@ import Footer from "@/components/site/Footer";
 import SponsorStrip from "@/components/SponsorStrip";
 import FeaturedNews from "@/components/news/FeaturedNews";
 import FacebookFollow from "@/components/site/FacebookFollow";
+import SponsorCarouselLoader from "@/components/site/SponsorCarouselLoader";
 
 import { createClient } from "@/lib/supabase/server";
 import type { NewsArticle } from "@/types/news";
