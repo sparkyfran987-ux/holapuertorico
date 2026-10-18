@@ -147,7 +147,7 @@ export default function FeaturedNews() {
               <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-4">
                 <div>
                   <p className="font-bold text-[#071428]">
-                    Hola Puerto Rico+
+                    Hola Puerto Rico
                   </p>
 
                   <p className="mt-1 text-xs text-gray-500">
