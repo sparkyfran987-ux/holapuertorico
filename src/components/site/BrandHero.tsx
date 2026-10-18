@@ -114,18 +114,18 @@ export default function BrandHero() {
             </div>
 
             {/* Facebook Page Plugin */}
+            {/* Facebook Page Plugin */}
             <div className="mx-auto w-full max-w-[500px] overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
               <iframe
-                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fholapr1&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fholapr1&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
                 title="Publicaciones de Facebook de Hola Puerto Rico"
-                width="340"
-                height="500"
+                width="500"
+                height="600"
                 style={{
                   border: "none",
                   overflow: "hidden",
                   width: "100%",
-                  maxWidth: "340px",
-                  height: "500px",
+                  height: "600px",
                   display: "block",
                   margin: "0 auto",
                 }}
