@@ -1,4 +1,3 @@
-```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,7 +21,6 @@ export default function Header() {
     <header className="bg-white">
       <div className="mx-auto flex min-h-[92px] max-w-[1500px] items-center justify-between gap-6 px-5 lg:px-8">
 
-        {/* Logo */}
         <Link
           href="/"
           className="shrink-0 transition-opacity hover:opacity-90"
@@ -38,7 +36,6 @@ export default function Header() {
           />
         </Link>
 
-        {/* Texto central */}
         <div className="hidden flex-1 text-center md:block">
           <p className="text-[13px] font-semibold tracking-wide text-gray-700">
             Más contenido • Más Puerto Rico • Siempre contigo
@@ -49,7 +46,6 @@ export default function Header() {
           </p>
         </div>
 
-        {/* Redes sociales */}
         <div className="flex shrink-0 items-center gap-4 sm:gap-5">
           {socialLinks.map((social) => (
             <a
@@ -68,4 +64,3 @@ export default function Header() {
     </header>
   );
 }
-```
