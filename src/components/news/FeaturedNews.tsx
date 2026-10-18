@@ -1,3 +1,4 @@
+
 import type { CSSProperties } from "react";
 
 export default function FeaturedNews() {
@@ -12,22 +13,26 @@ export default function FeaturedNews() {
     {
       number: "01",
       title: "Noticias de Puerto Rico",
-      description: "Lo que ocurre en nuestra isla y en nuestras comunidades.",
+      description:
+        "Lo que ocurre en nuestra isla y en nuestras comunidades.",
     },
     {
       number: "02",
       title: "Entretenimiento y cultura",
-      description: "Artistas, música, espectáculos y lo que está dando de qué hablar.",
+      description:
+        "Artistas, música, espectáculos y lo que está dando de qué hablar.",
     },
     {
       number: "03",
       title: "Deportes",
-      description: "Los eventos, resultados y protagonistas del deporte.",
+      description:
+        "Los eventos, resultados y protagonistas del deporte.",
     },
     {
       number: "04",
       title: "Comunidad y mucho más",
-      description: "Historias positivas, turismo, gastronomía y contenido para todos.",
+      description:
+        "Historias positivas, turismo, gastronomía y contenido para todos.",
     },
   ];
 
@@ -37,6 +42,7 @@ export default function FeaturedNews() {
       className="scroll-mt-6 overflow-hidden bg-[#f5f7fb] py-16 sm:py-20"
     >
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-10">
+        {/* Encabezado */}
         <div className="mb-10">
           <div className="flex items-center gap-2">
             <span className="h-2 w-8 bg-[#bf0a30]" />
@@ -59,7 +65,7 @@ export default function FeaturedNews() {
         </div>
 
         <div className="grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
-          {/* Información a la izquierda */}
+          {/* Información de Hola Puerto Rico */}
           <div className="lg:sticky lg:top-8">
             <div className="rounded-3xl bg-[#071428] p-7 text-white sm:p-9">
               <div className="inline-flex rounded-full border border-white/20 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/80">
@@ -106,41 +112,86 @@ export default function FeaturedNews() {
             </div>
           </div>
 
-          {/* Widget de Facebook a la derecha */}
-          <div className="min-w-0">
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
-                  Síguenos en Facebook
-                </p>
+          {/* Redes sociales */}
+          <div className="min-w-0 space-y-12">
+            {/* Facebook */}
+            <div>
+              <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
+                    Síguenos en Facebook
+                  </p>
 
-                <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428]">
-                  Lo último de nuestra comunidad
-                </h3>
+                  <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428]">
+                    Lo último de nuestra comunidad
+                  </h3>
 
-                <p className="mt-2 text-sm leading-6 text-gray-500">
-                  Publicaciones, noticias y momentos de Puerto Rico.
-                </p>
+                  <p className="mt-2 text-sm leading-6 text-gray-500">
+                    Publicaciones, noticias y momentos de Puerto Rico.
+                  </p>
+                </div>
+
+                <a
+                  href="https://www.facebook.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
+                >
+                  Visitar Facebook ↗
+                </a>
               </div>
 
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
-              >
-                Visitar Facebook ↗
-              </a>
+              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
+                <iframe
+                  src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
+                  title="Publicaciones de Facebook de Hola Puerto Rico"
+                  style={iframeStyle}
+                  loading="lazy"
+                  allow="encrypted-media"
+                />
+              </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
-              <iframe
-                src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
-                title="Publicaciones de Facebook de Hola Puerto Rico"
-                style={iframeStyle}
-                loading="lazy"
-                allow="encrypted-media"
-              />
+            {/* YouTube */}
+            <div>
+              <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#bf0a30]">
+                    Hola Puerto Rico TV
+                  </p>
+
+                  <h3 className="mt-2 text-2xl font-black tracking-tight text-[#071428]">
+                    También estamos en YouTube
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-6 text-gray-500">
+                    Noticias, videos y más contenido de nuestra isla.
+                  </p>
+                </div>
+
+                <a
+                  href="https://www.youtube.com/@holaprtv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-[#002868] transition hover:text-[#bf0a30]"
+                >
+                  Visitar YouTube ↗
+                </a>
+              </div>
+
+              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-[0_18px_55px_rgba(7,20,40,0.08)] sm:p-3">
+                <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
+                  <iframe
+                    src="https://www.youtube.com/embed?listType=user_uploads&list=holaprtv"
+                    title="Videos de Hola Puerto Rico TV en YouTube"
+                    className="absolute inset-0 h-full w-full border-0"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
