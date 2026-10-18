@@ -1,3 +1,4 @@
+```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -86,7 +87,7 @@ export default function BrandHero() {
             </div>
           </div>
 
-          {/* Widget de Juicer */}
+          {/* Widget actualizado de Juicer */}
           <div className="min-w-0">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -113,12 +114,17 @@ export default function BrandHero() {
               </a>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
+            <div className="mx-auto w-full max-w-[1000px] overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
               <iframe
-                src="https://www.juicer.io/api/feeds/holapr1/iframe"
-                title="Redes sociales de Hola Puerto Rico"
-                className="block w-full border-0"
-                style={{ height: "560px" }}
+                src="https://www.juicer.io/api/feeds/holapr1-a10356be-154f-4a03-82cd-4a4e27f9ebf1/iframe"
+                title="holapr1 - Juicer social media feed"
+                className="mx-auto block w-full border-0"
+                style={{
+                  height: "1000px",
+                  maxWidth: "100%",
+                  display: "block",
+                  margin: "0 auto",
+                }}
                 loading="lazy"
               />
             </div>
@@ -135,3 +141,4 @@ export default function BrandHero() {
     </section>
   );
 }
+```
