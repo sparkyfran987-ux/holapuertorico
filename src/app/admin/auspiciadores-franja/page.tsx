@@ -404,11 +404,11 @@ export default function AuspiciadoresFranjaPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-lg font-black text-white">
-                +
+                
               </span>
               <div>
                 <p className="text-lg font-black tracking-tight">
-                  Hola Puerto Rico+
+                  Hola Puerto Rico
                 </p>
                 <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
                   Administración de auspiciadores
@@ -651,7 +651,7 @@ export default function AuspiciadoresFranjaPage() {
             ) : sponsors.length === 0 ? (
               <div className="rounded-xl border border-dashed border-slate-300 px-5 py-12 text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl">
-                  +
+                  
                 </div>
                 <h3 className="font-bold">Todavía no hay auspiciadores</h3>
                 <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-500">
@@ -779,7 +779,7 @@ export default function AuspiciadoresFranjaPage() {
         </div>
 
         <footer className="mt-8 border-t border-slate-200 py-5 text-center text-xs text-slate-500">
-          Hola Puerto Rico+ · Administración de auspiciadores
+          Hola Puerto Rico · Administración de auspiciadores
         </footer>
       </div>
     </main>
