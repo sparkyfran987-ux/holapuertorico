@@ -1,4 +1,4 @@
-
+```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,9 +38,7 @@ export default function BrandHero() {
             <h1 className="mt-6 text-5xl font-black leading-[0.92] tracking-[-0.05em] sm:text-6xl lg:text-8xl">
               Hola
               <span className="block text-white">Puerto Rico</span>
-              <span className="mt-2 block text-2xl font-bold tracking-tight text-white/70 sm:text-3xl lg:text-4xl">
-                
-              </span>
+              <span className="mt-2 block text-2xl font-bold tracking-tight text-white/70 sm:text-3xl lg:text-4xl" />
             </h1>
 
             <p className="mt-7 max-w-xl text-base leading-8 text-white/80 sm:text-lg">
@@ -89,7 +87,7 @@ export default function BrandHero() {
             </div>
           </div>
 
-          {/* Facebook a la derecha */}
+          {/* Widget de Juicer */}
           <div className="min-w-0">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -118,12 +116,11 @@ export default function BrandHero() {
 
             <div className="overflow-hidden rounded-2xl border border-white/15 bg-white p-2 shadow-[0_20px_65px_rgba(0,0,0,0.25)] sm:p-3">
               <iframe
-                src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
-                title="Publicaciones de Facebook de Hola Puerto Rico"
+                src="https://www.juicer.io/api/feeds/holapr1/iframe"
+                title="Redes sociales de Hola Puerto Rico"
                 className="block w-full border-0"
                 style={{ height: "560px" }}
                 loading="lazy"
-                allow="encrypted-media"
               />
             </div>
 
@@ -139,3 +136,4 @@ export default function BrandHero() {
     </section>
   );
 }
+```
