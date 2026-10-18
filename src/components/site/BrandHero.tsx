@@ -30,7 +30,7 @@ export default function BrandHero() {
 
           <h1 className="mt-6 text-5xl font-black leading-[0.92] tracking-[-0.05em] sm:text-6xl lg:text-8xl">
             Hola
-            <span className="block text-white">Puerto Rico+</span>
+            <span className="block text-white">Puerto Rico</span>
           </h1>
 
           <p className="mt-7 max-w-xl text-base leading-8 text-white/80 sm:text-lg">
