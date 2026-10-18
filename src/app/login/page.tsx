@@ -63,7 +63,7 @@ export default function LoginPage() {
           <div className="relative">
             <Image
               src="/logo.png"
-              alt="Hola Puerto Rico+"
+              alt="Hola Puerto Rico"
               width={220}
               height={74}
               className="h-auto w-[200px] brightness-0 invert"
