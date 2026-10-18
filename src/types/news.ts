@@ -15,8 +15,6 @@ export interface NewsArticle {
   title: string;
   slug: string;
   excerpt: string | null;
-  content?: string | null;
-  backlink?: string | null;
   image_url: string | null;
   category: string;
   author: string;
