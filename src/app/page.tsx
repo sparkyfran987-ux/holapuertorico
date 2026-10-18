@@ -66,7 +66,7 @@ export default async function HomePage() {
       <main>
         <BrandHero />
 
-        <FeaturedNews articles={featuredNews} />
+        <FeaturedNews />
 
         <SponsorStrip />
 
