@@ -1,4 +1,3 @@
-```ts
 import type { NewsArticle } from "@/types/news";
 
 export const news: NewsArticle[] = [
@@ -17,4 +16,3 @@ export const news: NewsArticle[] = [
     breaking: false,
   },
 ];
-```
