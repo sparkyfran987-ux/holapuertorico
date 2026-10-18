@@ -38,7 +38,7 @@ export default async function EditorialArticlePage({
   const { data, error } = await supabase
     .from("editorials")
     .select(
-      "id, title, slug, excerpt, content, image_url, author, status, featured, published_at"
+      "id, title, slug, excerpt, content, , author, status, featured, published_at"
     )
     .eq("slug", slug)
     .eq("status", "published")
@@ -98,17 +98,18 @@ export default async function EditorialArticlePage({
       {/* Imagen */}
       {editorial.image_url && (
         <div className="mx-auto max-w-[1300px] px-5 pt-8 sm:px-8 lg:pt-12">
-          <div className="relative aspect-[16/7] overflow-hidden rounded-3xl bg-[#071428]">
-            <Image
-              src={editorial.image_url}
-              alt={editorial.title}
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1300px) 100vw, 1300px"
-            />
-          </div>
-        </div>
+  <div className="relative overflow-hidden rounded-3xl bg-[#071428]">
+    <Image
+      src={editorial.image_url}
+      alt={editorial.title}
+      width={1600}
+      height={900}
+      priority
+      className="h-auto w-full object-contain"
+      sizes="(max-width: 1300px) 100vw, 1300px"
+    />
+  </div>
+</div>
       )}
 
       {/* Contenido */}
