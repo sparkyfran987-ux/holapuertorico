@@ -1,12 +1,14 @@
 import type { CSSProperties } from "react";
 
 export default function FeaturedNews() {
-  const iframeStyle: CSSProperties = {
-    display: "block",
-    width: "100%",
-    height: "1080px",
-    border: "none",
-  };
+ const iframeStyle: CSSProperties = {
+  display: "block",
+  width: "100%",
+  maxWidth: "440px",
+  height: "1080px",
+  border: "none",
+  margin: "0 auto",
+};
 
   return (
     <section
@@ -29,15 +31,15 @@ export default function FeaturedNews() {
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <iframe
-            src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
-            title="Publicaciones de Facebook de Hola Puerto Rico+"
-            style={iframeStyle}
-            loading="lazy"
-            allow="encrypted-media"
-          />
-        </div>
+    <div className="flex justify-center overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+  <iframe
+    src="https://widgets.sociablekit.com/facebook-page-posts/iframe/25722931"
+    title="Publicaciones de Facebook de Hola Puerto Rico+"
+    style={iframeStyle}
+    loading="lazy"
+    allow="encrypted-media"
+  />
+</div>
       </div>
     </section>
   );
