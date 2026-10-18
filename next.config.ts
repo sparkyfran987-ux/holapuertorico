@@ -1,4 +1,3 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -8,6 +7,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "eavttymmzrtcwboxhjwl.supabase.co",
         pathname: "/storage/v1/object/public/news-images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "eavttymmzrtcwboxhjwl.supabase.co",
+        pathname: "/storage/v1/object/public/sponsor-logos/**",
       },
     ],
   },
