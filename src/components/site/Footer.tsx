@@ -1,96 +1,95 @@
 import Image from "next/image";
-import Link from "next/link";
-
-const sections = [
-  { label: "Noticias", href: "/noticias" },
-  { label: "Comunidad", href: "/comunidad" },
-  { label: "Deportes", href: "/deportes" },
-  { label: "Entretenimiento", href: "/entretenimiento" },
-  { label: "Gastronomía", href: "/gastronomia" },
-  { label: "Turismo", href: "/turismo" },
-  { label: "Videos", href: "/videos" },
-];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#071428] text-white">
-      <div className="mx-auto max-w-[1500px] px-5 py-14 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="relative overflow-hidden bg-[#071428] text-white">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#bf0a30] via-white to-[#002868]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-[#002868]/30 blur-3xl"
+      />
+
+      <div
+        aria-hidden="true"
+        className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#bf0a30]/20 blur-3xl"
+      />
+
+      <div className="relative mx-auto max-w-[1400px] px-5 pb-8 pt-16 sm:px-8 sm:pt-20">
+        <div className="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div>
-            <Link href="/" className="inline-block">
+            <a href="/" aria-label="Hola Puerto Rico+, inicio" className="inline-block">
               <Image
                 src="/logo.png"
                 alt="Hola Puerto Rico+"
                 width={260}
                 height={86}
-                className="w-[210px] brightness-0 invert"
+                className="w-[210px] brightness-0 invert sm:w-[240px]"
               />
-            </Link>
+            </a>
 
-            <p className="mt-5 max-w-md text-sm leading-7 text-gray-400">
-              Más contenido, más Puerto Rico, siempre contigo.
-              Noticias, comunidad, deportes, entretenimiento,
-              gastronomía y turismo.
-            </p>
+            <h2 className="mt-7 max-w-2xl text-3xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">
+              Más contenido.
+              <span className="block text-[#ff536f]">Más Puerto Rico.</span>
+              Siempre contigo.
+            </h2>
 
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
-              Aquí siempre es buena noticia
+            <p className="mt-5 max-w-xl text-sm leading-7 text-white/60 sm:text-base">
+              Un espacio dedicado a nuestra gente, nuestras historias y
+              todo lo bueno que sucede en Puerto Rico. Gracias por ser parte
+              de nuestra comunidad y acompañarnos cada día.
             </p>
           </div>
 
-          <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.18em] text-white">
-              Secciones
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 sm:p-9">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-white/40">
+              Sigamos conectados
+            </p>
+
+            <h3 className="mt-3 text-2xl font-black tracking-tight">
+              Puerto Rico tiene mucho que contar.
             </h3>
 
-            <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3">
-              {sections.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-gray-400 transition hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+            <p className="mt-3 text-sm leading-7 text-white/60">
+              Visita nuestras redes sociales y mantente al día con nuestras
+              publicaciones, historias y novedades.
+            </p>
 
-          <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.18em] text-white">
-              Información
-            </h3>
-
-            <div className="mt-5 space-y-3">
-              <Link
-                href="/nosotros"
-                className="block text-sm text-gray-400 transition hover:text-white"
+            <a
+              href="https://www.facebook.com/holapr1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-3 rounded-full bg-[#1877F2] px-6 py-3.5 text-sm font-black transition hover:-translate-y-0.5 hover:bg-[#166fe5]"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                fill="currentColor"
+                aria-hidden="true"
               >
-                Sobre nosotros
-              </Link>
-
-              <Link
-                href="/contacto"
-                className="block text-sm text-gray-400 transition hover:text-white"
-              >
-                Contacto
-              </Link>
-
-              <Link
-                href="/buscar"
-                className="block text-sm text-gray-400 transition hover:text-white"
-              >
-                Buscar
-              </Link>
-            </div>
+                <path d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.6c0-.9.3-1.5 1.6-1.5H17V4.2C16.7 4.1 15.6 4 14.4 4c-2.4 0-4 1.5-4 4.2v2.4H7.5v3.2h2.9V22h3.1Z" />
+              </svg>
+              Síguenos en Facebook
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Hola Puerto Rico. Todos los
-            derechos reservados.
+        <div className="flex flex-col gap-4 pt-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs leading-6 text-white/40">
+            © {new Date().getFullYear()} Hola Puerto Rico+. Todos los derechos reservados.
           </p>
+
+          <a
+            href="#inicio"
+            className="text-xs font-bold text-white/50 transition hover:text-white"
+          >
+            Volver al inicio ↑
+          </a>
         </div>
       </div>
     </footer>
