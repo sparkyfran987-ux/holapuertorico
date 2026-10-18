@@ -1,4 +1,3 @@
-```tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,7 +26,7 @@ export default function FeaturedNews({
 
   const [lead, ...rest] = articles;
   const leadDate = formatDate(lead.published_at);
-  const leadHref = `/noticias/${lead.slug}`;
+  const leadHref = "/noticias/" + lead.slug;
 
   return (
     <section
@@ -124,7 +123,7 @@ export default function FeaturedNews({
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {rest.map((article) => {
               const date = formatDate(article.published_at);
-              const articleHref = `/noticias/${article.slug}`;
+              const articleHref = "/noticias/" + article.slug;
 
               return (
                 <article
@@ -183,4 +182,3 @@ export default function FeaturedNews({
     </section>
   );
 }
-```
