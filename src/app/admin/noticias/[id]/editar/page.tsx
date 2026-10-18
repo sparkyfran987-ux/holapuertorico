@@ -1,3 +1,4 @@
+```tsx
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
@@ -46,7 +47,6 @@ export default function EditarNoticiaPage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
-  const [backlink, setBacklink] = useState("");
 
   const [category, setCategory] = useState("Noticias Locales");
   const [author, setAuthor] = useState("Hola Puerto Rico+");
@@ -69,6 +69,8 @@ export default function EditarNoticiaPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadArticle() {
       setLoading(true);
       setError("");
@@ -78,6 +80,8 @@ export default function EditarNoticiaPage() {
         .select("*")
         .eq("id", id)
         .maybeSingle();
+
+      if (cancelled) return;
 
       if (fetchError) {
         setError(
@@ -99,7 +103,6 @@ export default function EditarNoticiaPage() {
       setTitle(loadedArticle.title);
       setSlug(loadedArticle.slug);
       setExcerpt(loadedArticle.excerpt || "");
-      setBacklink(loadedArticle.backlink || "");
       setCategory(normalizeCategory(loadedArticle.category));
       setAuthor(loadedArticle.author);
       setFeatured(loadedArticle.featured);
@@ -111,7 +114,11 @@ export default function EditarNoticiaPage() {
     }
 
     loadArticle();
-  }, [id]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, supabase]);
 
   function createSlug(value: string) {
     return value
@@ -133,11 +140,11 @@ export default function EditarNoticiaPage() {
   }
 
   function handleImageChange(file: File | null) {
-    setImageFile(file);
-
     if (imagePreview?.startsWith("blob:")) {
       URL.revokeObjectURL(imagePreview);
     }
+
+    setImageFile(file);
 
     if (file) {
       setImagePreview(URL.createObjectURL(file));
@@ -156,10 +163,7 @@ export default function EditarNoticiaPage() {
     setError("");
 
     try {
-      /*
-       * 1. COMPROBAR SESIÓN
-       */
-
+      // 1. Comprobar sesión
       const {
         data: { user },
         error: userError,
@@ -177,48 +181,13 @@ export default function EditarNoticiaPage() {
         );
       }
 
-      console.log("=== DIAGNÓSTICO DE EDICIÓN ===");
-      console.log("Usuario autenticado:", user.id);
-      console.log("Email:", user.email);
-      console.log("ID de noticia:", id);
-      console.log("Categoría seleccionada:", category);
-
-      /*
-       * 2. VALIDACIONES
-       */
-
+      // 2. Validaciones
       if (!title.trim()) {
         throw new Error("El título es obligatorio.");
       }
 
       if (!slug.trim()) {
         throw new Error("El slug es obligatorio.");
-      }
-
-      if (!backlink.trim()) {
-        throw new Error(
-          "El backlink de la publicación es obligatorio.",
-        );
-      }
-
-      let validBacklink: URL;
-
-      try {
-        validBacklink = new URL(backlink.trim());
-      } catch {
-        throw new Error(
-          "El backlink debe ser una URL válida.",
-        );
-      }
-
-      if (
-        !["http:", "https:"].includes(
-          validBacklink.protocol,
-        )
-      ) {
-        throw new Error(
-          "El backlink debe comenzar con http:// o https://.",
-        );
       }
 
       if (!author.trim()) {
@@ -231,10 +200,7 @@ export default function EditarNoticiaPage() {
         );
       }
 
-      /*
-       * 3. IMAGEN
-       */
-
+      // 3. Imagen
       let imageUrl = article?.image_url || null;
 
       if (imageFile) {
@@ -251,21 +217,17 @@ export default function EditarNoticiaPage() {
         }
 
         const extension =
-          imageFile.name
-            .split(".")
-            .pop()
-            ?.toLowerCase() || "jpg";
+          imageFile.name.split(".").pop()?.toLowerCase() || "jpg";
 
         const filePath = `news/${new Date().getFullYear()}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
-        const { error: uploadError } =
-          await supabase.storage
-            .from("news-images")
-            .upload(filePath, imageFile, {
-              cacheControl: "3600",
-              upsert: false,
-              contentType: imageFile.type,
-            });
+        const { error: uploadError } = await supabase.storage
+          .from("news-images")
+          .upload(filePath, imageFile, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: imageFile.type,
+          });
 
         if (uploadError) {
           throw new Error(
@@ -273,18 +235,14 @@ export default function EditarNoticiaPage() {
           );
         }
 
-        const { data: publicUrlData } =
-          supabase.storage
-            .from("news-images")
-            .getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage
+          .from("news-images")
+          .getPublicUrl(filePath);
 
         imageUrl = publicUrlData.publicUrl;
       }
 
-      /*
-       * 4. COMPROBAR QUE LA NOTICIA EXISTE
-       */
-
+      // 4. Comprobar que la noticia existe
       const {
         data: existingArticle,
         error: existingError,
@@ -306,49 +264,25 @@ export default function EditarNoticiaPage() {
         );
       }
 
-      console.log(
-        "Noticia encontrada antes del UPDATE:",
-        existingArticle,
-      );
-
-      /*
-       * 5. DATOS QUE SE GUARDARÁN
-       */
-
+      // 5. Preparar datos sin backlink ni content
       const updateData = {
         title: title.trim(),
         slug: slug.trim(),
         excerpt: excerpt.trim() || null,
-
-        backlink: validBacklink.toString(),
-
         image_url: imageUrl,
-
         category: normalizeCategory(category),
         author: author.trim(),
-
         status,
         featured,
         breaking,
-
         published_at:
           status === "published"
-            ? article?.published_at ||
-              new Date().toISOString()
+            ? article?.published_at || new Date().toISOString()
             : null,
-
         updated_at: new Date().toISOString(),
       };
 
-      console.log(
-        "Datos enviados al UPDATE:",
-        updateData,
-      );
-
-      /*
-       * 6. ACTUALIZAR
-       */
-
+      // 6. Actualizar noticia
       const {
         data: updatedArticle,
         error: updateError,
@@ -358,11 +292,6 @@ export default function EditarNoticiaPage() {
         .eq("id", id)
         .select("*")
         .single();
-
-      console.log("Resultado del UPDATE:", {
-        updatedArticle,
-        updateError,
-      });
 
       if (updateError) {
         throw new Error(
@@ -376,59 +305,33 @@ export default function EditarNoticiaPage() {
         );
       }
 
-      /*
-       * 7. CONFIRMAR CATEGORÍA
-       */
-
-      if (
-        updatedArticle.category !==
-        updateData.category
-      ) {
+      // 7. Confirmar categoría
+      if (updatedArticle.category !== updateData.category) {
         throw new Error(
           `La noticia se actualizó, pero Supabase devolvió la categoría "${updatedArticle.category}" en lugar de "${updateData.category}".`,
         );
       }
 
-      /*
-       * 8. ACTUALIZAR EL ESTADO DEL FORMULARIO
-       */
-
-      const savedArticle =
-        updatedArticle as NewsArticle;
+      // 8. Actualizar el formulario
+      const savedArticle = updatedArticle as NewsArticle;
 
       setArticle(savedArticle);
-
       setTitle(savedArticle.title);
       setSlug(savedArticle.slug);
       setExcerpt(savedArticle.excerpt || "");
-      setBacklink(savedArticle.backlink || "");
-
-      setCategory(
-        normalizeCategory(savedArticle.category),
-      );
-
+      setCategory(normalizeCategory(savedArticle.category));
       setAuthor(savedArticle.author);
-
       setFeatured(savedArticle.featured);
       setBreaking(savedArticle.breaking);
-
       setStatus(savedArticle.status);
-
       setImagePreview(savedArticle.image_url);
       setImageFile(null);
 
       setMessage(
         `La noticia fue actualizada correctamente. Categoría guardada: ${savedArticle.category}`,
       );
-
-      console.log(
-        "=== EDICIÓN COMPLETADA CORRECTAMENTE ===",
-      );
     } catch (saveError) {
-      console.error(
-        "=== ERROR COMPLETO AL GUARDAR ===",
-        saveError,
-      );
+      console.error("Error al guardar la noticia:", saveError);
 
       setError(
         saveError instanceof Error
@@ -445,12 +348,11 @@ export default function EditarNoticiaPage() {
       "¿Seguro que quieres eliminar esta noticia? Esta acción no se puede deshacer.",
     );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     setDeleting(true);
     setError("");
+    setMessage("");
 
     const { error: deleteError } = await supabase
       .from("news")
@@ -461,7 +363,6 @@ export default function EditarNoticiaPage() {
       setError(
         `No se pudo eliminar la noticia: ${deleteError.message}`,
       );
-
       setDeleting(false);
       return;
     }
@@ -506,15 +407,13 @@ export default function EditarNoticiaPage() {
             </h1>
 
             <p className="mt-2 text-sm text-gray-500">
-              Modifica la información y el enlace de esta publicación.
+              Modifica la información de esta publicación.
             </p>
           </div>
 
           <button
             type="button"
-            onClick={() =>
-              router.push("/admin/noticias")
-            }
+            onClick={() => router.push("/admin/noticias")}
             className="border border-gray-300 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.1em] text-gray-700 transition hover:border-gray-950 hover:text-gray-950"
           >
             Volver a noticias
@@ -552,10 +451,9 @@ export default function EditarNoticiaPage() {
                     type="text"
                     value={title}
                     onChange={(event) =>
-                      handleTitleChange(
-                        event.target.value,
-                      )
+                      handleTitleChange(event.target.value)
                     }
+                    required
                     className="w-full border border-gray-300 bg-white px-4 py-3 text-base font-semibold text-gray-950 outline-none focus:border-red-600"
                   />
                 </div>
@@ -568,9 +466,8 @@ export default function EditarNoticiaPage() {
                   <input
                     type="text"
                     value={slug}
-                    onChange={(event) =>
-                      setSlug(event.target.value)
-                    }
+                    onChange={(event) => setSlug(event.target.value)}
+                    required
                     className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-950 outline-none focus:border-red-600"
                   />
 
@@ -586,35 +483,10 @@ export default function EditarNoticiaPage() {
 
                   <textarea
                     value={excerpt}
-                    onChange={(event) =>
-                      setExcerpt(event.target.value)
-                    }
+                    onChange={(event) => setExcerpt(event.target.value)}
                     rows={4}
                     className="w-full resize-none border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-950 outline-none focus:border-red-600"
                   />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-xs font-black uppercase tracking-[0.1em] text-gray-700">
-                    Backlink de la publicación
-                  </label>
-
-                  <input
-                    type="url"
-                    value={backlink}
-                    onChange={(event) =>
-                      setBacklink(event.target.value)
-                    }
-                    placeholder="https://www.facebook.com/..."
-                    required
-                    className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-950 outline-none focus:border-red-600"
-                  />
-
-                  <p className="mt-2 text-xs leading-5 text-gray-400">
-                    Coloca aquí el enlace de la publicación original.
-                    Al seleccionar «Leer noticia», el visitante será
-                    enviado directamente a este enlace.
-                  </p>
                 </div>
               </div>
             </section>
@@ -635,16 +507,11 @@ export default function EditarNoticiaPage() {
 
                     <select
                       value={category}
-                      onChange={(event) =>
-                        setCategory(event.target.value)
-                      }
+                      onChange={(event) => setCategory(event.target.value)}
                       className="w-full border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-950 outline-none focus:border-red-600"
                     >
                       {categories.map((item) => (
-                        <option
-                          key={item}
-                          value={item}
-                        >
+                        <option key={item} value={item}>
                           {item}
                         </option>
                       ))}
@@ -659,9 +526,8 @@ export default function EditarNoticiaPage() {
                     <input
                       type="text"
                       value={author}
-                      onChange={(event) =>
-                        setAuthor(event.target.value)
-                      }
+                      onChange={(event) => setAuthor(event.target.value)}
+                      required
                       className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-950 outline-none focus:border-red-600"
                     />
                   </div>
@@ -675,20 +541,13 @@ export default function EditarNoticiaPage() {
                       value={status}
                       onChange={(event) =>
                         setStatus(
-                          event.target.value as
-                            | "draft"
-                            | "published",
+                          event.target.value as "draft" | "published",
                         )
                       }
                       className="w-full border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-950 outline-none focus:border-red-600"
                     >
-                      <option value="draft">
-                        Borrador
-                      </option>
-
-                      <option value="published">
-                        Publicada
-                      </option>
+                      <option value="draft">Borrador</option>
+                      <option value="published">Publicada</option>
                     </select>
                   </div>
 
@@ -697,7 +556,6 @@ export default function EditarNoticiaPage() {
                       <p className="text-sm font-bold text-gray-950">
                         Noticia destacada
                       </p>
-
                       <p className="mt-1 text-xs text-gray-500">
                         Mostrar en el carrusel principal.
                       </p>
@@ -706,11 +564,7 @@ export default function EditarNoticiaPage() {
                     <input
                       type="checkbox"
                       checked={featured}
-                      onChange={(event) =>
-                        setFeatured(
-                          event.target.checked,
-                        )
-                      }
+                      onChange={(event) => setFeatured(event.target.checked)}
                       className="h-5 w-5 accent-red-600"
                     />
                   </label>
@@ -720,7 +574,6 @@ export default function EditarNoticiaPage() {
                       <p className="text-sm font-bold text-gray-950">
                         Última hora
                       </p>
-
                       <p className="mt-1 text-xs text-gray-500">
                         Marcar como noticia urgente.
                       </p>
@@ -729,11 +582,7 @@ export default function EditarNoticiaPage() {
                     <input
                       type="checkbox"
                       checked={breaking}
-                      onChange={(event) =>
-                        setBreaking(
-                          event.target.checked,
-                        )
-                      }
+                      onChange={(event) => setBreaking(event.target.checked)}
                       className="h-5 w-5 accent-red-600"
                     />
                   </label>
@@ -771,18 +620,15 @@ export default function EditarNoticiaPage() {
                       type="file"
                       accept="image/*"
                       onChange={(event) =>
-                        handleImageChange(
-                          event.target.files?.[0] ||
-                            null,
-                        )
+                        handleImageChange(event.target.files?.[0] || null)
                       }
                       className="hidden"
                     />
                   </label>
 
                   <p className="mt-3 text-xs leading-5 text-gray-400">
-                    Recomendado: imagen cuadrada de
-                    1080 × 1080 px. Máximo 10 MB.
+                    Recomendado: imagen cuadrada de 1080 × 1080 px.
+                    Máximo 10 MB.
                   </p>
                 </div>
               </section>
@@ -792,9 +638,7 @@ export default function EditarNoticiaPage() {
                 disabled={saving}
                 className="w-full bg-gray-950 px-6 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {saving
-                  ? "Guardando cambios..."
-                  : "Guardar cambios"}
+                {saving ? "Guardando cambios..." : "Guardar cambios"}
               </button>
 
               <button
@@ -803,9 +647,7 @@ export default function EditarNoticiaPage() {
                 disabled={deleting}
                 className="w-full border border-red-200 bg-white px-6 py-4 text-sm font-black uppercase tracking-[0.12em] text-red-600 transition hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {deleting
-                  ? "Eliminando..."
-                  : "Eliminar noticia"}
+                {deleting ? "Eliminando..." : "Eliminar noticia"}
               </button>
             </aside>
           </div>
@@ -814,3 +656,4 @@ export default function EditarNoticiaPage() {
     </main>
   );
 }
+```
