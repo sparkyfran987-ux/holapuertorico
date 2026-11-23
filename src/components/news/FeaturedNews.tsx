@@ -113,7 +113,7 @@ export default function FeaturedNews() {
 
             <div className="relative aspect-video overflow-hidden rounded-[18px] bg-black">
               <iframe
-                src="https://www.youtube.com/embed/3L3hAbJzgsE?si=aTifHKbMLkF66mA4"
+                src="https://www.youtube.com/embed/cHqR6Lq8tgg?si=_h9CtgpdqKoieeqy"
                 title="Hola Puerto Rico TV"
                 className="absolute inset-0 h-full w-full border-0"
                 loading="lazy"
